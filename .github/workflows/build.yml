@@ -6,6 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-
+    - name: run
+      
+    - run: go get -v -u ./...  
+    
     - name: run
       uses: cedrickring/golang-action@1.6.0
