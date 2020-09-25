@@ -1,0 +1,3 @@
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1 as base
+
+RUN microdnf install golang
