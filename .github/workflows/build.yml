@@ -11,14 +11,13 @@ jobs:
           go-version: 1.13
 
       - name: Check out source code
-        uses: actions/checkout@v1
-
+        uses: actions/checkout@v
       - name: Build
-	env:
+        env:
 	  GOPROXY: "https://proxy.golang.org"
-        run: go build .
+	run: go build .
 
       - name: Test
-	env:
-	  GOPROXY: "https://proxy.golang.org"
-        run: go test -v .
+        env:
+	 GOPROXY: "https://proxy.golang.org"
+	run: go test -v .
