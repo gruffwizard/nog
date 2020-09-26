@@ -1,25 +1,11 @@
-name: Build and Test
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-  
+on: push
+name: My cool Action
 jobs:
-  
-  build:
-    name: Build
-    runs-on: ubuntu-latest 
+  checks:
+    name: run
+    runs-on: ubuntu-latest
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.13
+    - uses: actions/checkout@master
 
-      - name: Check out code
-        uses: actions/checkout@v2
-        with:
-          path: go/src/github.com/gruffwizard/nog
-
-      - name: Build
-        run: cd go/src/github.com/gruffwizard/nog && go build -o target/nog
+    - name: run
+      uses: cedrickring/golang-action@1.6.0
