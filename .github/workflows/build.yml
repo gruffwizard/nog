@@ -16,8 +16,10 @@ jobs:
           go-version: 1.13
 
       - name: Check out code
-        uses: actions/checkout@v1
-
+        uses: actions/checkout@v2
+        with:
+           path: /home/runner/go/src/github.com/gruffwizard/nog
+         
       - name: Lint Go Code
         run: |
           export PATH=$PATH:$(go env GOPATH)/bin 
@@ -34,7 +36,9 @@ jobs:
           go-version: 1.13
 
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          path: /home/runner/go/src/github.com/gruffwizard/nog
 
       - name: Run Unit tests.
         run: make test
@@ -51,7 +55,9 @@ jobs:
           go-version: 1.13
 
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          path: /home/runner/go/src/github.com/gruffwizard/nog
 
       - name: Build
         run: make build
