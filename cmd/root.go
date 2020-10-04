@@ -27,6 +27,7 @@ import (
 var cfgFile string
 var mvnLoc  string
 var srcLoc  string
+var Verbose bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -61,6 +62,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.nog.yaml)")
 	rootCmd.PersistentFlags().StringVarP(&mvnLoc, "maven","m", "", "maven repo location")
 	rootCmd.PersistentFlags().StringVarP(&srcLoc, "src", "s","", "src location")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v",false, "verbose")
 
 	}
 

@@ -34,6 +34,13 @@ var versionCmd = &cobra.Command{
 	Long: `Tin, written - thats what it does`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(NogVersion)
+
+		if Verbose {
+				fmt.Printf("commit  : %s\n",NogCommit)
+				fmt.Printf("built   : %s\n",NogBuiltDate)
+				fmt.Printf("builtby : %s\n",NogBuiltBy)
+		}
+
 	},
 }
 
