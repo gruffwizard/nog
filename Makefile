@@ -1,7 +1,7 @@
 build:
 	echo ${PWD}
 	go build -o target/nog main.go
-	target/nog 
+	target/nog
 
 run:
 	echo ${PWD}
@@ -17,3 +17,6 @@ lint:
 	echo ${PWD}
 	go env GOPATH
 	go run main.go
+
+dummy-release:
+	goreleaser --snapshot --skip-publish --rm-dist
