@@ -1,7 +1,5 @@
 build:
 	echo ${PWD}
-	go env GOPATH
-	go get -u ./...
 	go build -o target/nog main.go
 	target/nog 
 
