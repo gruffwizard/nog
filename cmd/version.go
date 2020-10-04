@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+Copyright © 2020 Steve Poole  gruff.wizard@yahoo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,24 +13,31 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package cmd
 
-import "github.com/gruffwizard/nog/cmd"
-
-
-var (
-    version = "dev"
-    commit  = "none"
-    date    = "unknown"
-    builtBy = "unknown"
+import (
+	"fmt"
+	"github.com/spf13/cobra"
 )
 
-func main() {
+var (
+ NogVersion string
+ NogCommit string
+ NogBuiltDate string
+ NogBuiltBy string
+)
 
-	cmd.NogVersion=version
-	cmd.NogCommit=commit
-	cmd.NogBuiltDate=date
-	cmd.NogBuiltBy=builtBy
-	
-	cmd.Execute()
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Display Nog version",
+	Long: `Tin, written - thats what it does`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(NogVersion)
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(versionCmd)
+
 }
