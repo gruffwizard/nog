@@ -52,6 +52,9 @@ func (l *launcher) SetSource(loc string) {
 func (l *launcher) Run() {
 
 	// build required local things
+	// source code location...
+	buildLocation(l.source)
+	buildLocation(l.maven)
 
 
 }
@@ -107,4 +110,24 @@ func IsLocalDir(file string) (bool,error) {
 
   return info.IsDir(),nil
 
+}
+
+func buildLocation(mp *mountPoint) {
+
+	if mp.Type=="file" {
+			exists,err := IsLocalDir(mp.Location)
+			if err!=nil {
+				panic(err)
+			}
+			if !exists {
+				os.MkdirAll(mp.Location,os.ModePerm)
+			}
+	}
+
+	if mp.Type=="vol" {
+			err := mkDockerVol(mp.Location)
+			if err!=nil {
+						panic(err)
+			}
+	}
 }
