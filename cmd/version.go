@@ -20,6 +20,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// variables set by main launcher
 var (
  NogVersion string
  NogCommit string
@@ -27,12 +28,13 @@ var (
  NogBuiltBy string
 )
 
-// versionCmd represents the version command
+
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Display Nog version",
-	Long: `Tin, written - thats what it does`,
+	Long: `Displays version info. Combine with -v to see extended data`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		fmt.Println(NogVersion)
 
 		if Verbose {

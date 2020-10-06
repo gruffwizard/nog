@@ -2,69 +2,96 @@ package launcher
 
 
 import (
+	"strings"
 	"os"
   "fmt"
   "path/filepath"
+	"os/user"
 )
 
 type launcher struct {
 
-  Mode   string
-  Src string
-  SrcType string
+  mode   string
+	imageName string
+	maven *mountPoint
+	source *mountPoint
+
 }
 
+type mountPoint struct {
+	Type string
+	Location string
+}
+
+func NewDevLauncher() *launcher {
+
+	l:=new(launcher)
+	l.mode="dev"
+	l.imageName="gruffwizard/nog-quarkus:latest"
+
+	return l
+
+}
+
+func (l *launcher) SetMaven(loc string) {
+
+	l.maven=toMountPoint(loc)
+
+}
+
+
+func (l *launcher) SetSource(loc string) {
+
+		l.source=toMountPoint(loc)
+}
+
+
+/*
+	Run sets up  docker
+*/
 func (l *launcher) Run() {
 
-  fmt.Println("launching")
-  fmt.Printf("mode: %s\n",l.Mode)
-  fmt.Printf("source %s at %s\n",l.SrcType,l.Src)
+	// build required local things
 
 
 }
 
+func (l *launcher) Display() {
 
-
-func NewEditModeLauncher(srcLoc string) (*launcher,error) {
-
-        l := new(launcher)
-
-        l.Mode="edit"
-
-  			var exists bool
-  			var err error
-  			// where's the source?
-  			if srcLoc!="" {
-  				// the assumption is that this is a volume name
-  				// if it is then we are done. If not it might be
-  				exists,err= CheckForValidDockerVolume(srcLoc)
-
-  				if err!=nil {return nil,err}
-
-  				if exists {
-  					l.Src=srcLoc
-            l.SrcType="vol"
-  				} else {
-  					// is it a local dir?
-  					exists,err =IsLocalDir(srcLoc)
-  					if err!=nil {return nil,err}
-
-  					l.Src=srcLoc
-            l.SrcType="dir"
-
-  				}
-  				// a local file dir so check there too
-
-  			}
-
-        return l,nil
-
-}
-func ValidateEditMode() {
+  fmt.Println("Nog config")
+  fmt.Printf("mode   : %s\n",l.mode)
+	fmt.Printf("image  : %s\n",l.imageName)
+	fmt.Printf("maven  : %v\n",l.maven)
+	fmt.Printf("source : %v\n",l.source)
 
 
 }
 
+func toMountPoint(location string) (*mountPoint) {
+
+	mp := new(mountPoint)
+
+	if  strings.HasPrefix(strings.ToLower(location),"vol:") {
+			mp.Location=location[4:]
+			mp.Type="vol"
+			return mp
+	}
+
+	if  strings.HasPrefix(strings.ToLower(location),"file:") {
+			location=location[5:]
+	}
+	if strings.HasPrefix(location,"~") {
+			location=location[1:]
+			usr,_:= user.Current()
+			location=filepath.Join(usr.HomeDir,location)
+	}
+
+	mp.Location,_ = filepath.Abs(location)
+	mp.Type="file"
+
+	return mp
+
+}
 
 func IsLocalDir(file string) (bool,error) {
 
