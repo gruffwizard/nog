@@ -7,15 +7,17 @@ import (
   "fmt"
   "path/filepath"
 	"os/user"
+
+
+
 )
 
 type launcher struct {
 
   mode   string
 	imageName string
-	maven *mountPoint
-	source *mountPoint
-
+	mounts map[string]*mountPoint
+	cli *nogDockerClient
 }
 
 type mountPoint struct {
@@ -26,23 +28,57 @@ type mountPoint struct {
 func NewDevLauncher() *launcher {
 
 	l:=new(launcher)
+	l.mounts=make(map[string]*mountPoint)
 	l.mode="dev"
-	l.imageName="gruffwizard/nog-quarkus:latest"
+	l.imageName="gruffwizard/nog-quarkus-theia:latest"
+
+	client, err := NewDockerClient()
+	if (err!=nil) { panic(err)}
+	l.cli=client
 
 	return l
 
 }
 
+func  (l *launcher)  LaunchContainer() {
+
+
+	 local,err := l.cli.LocalImage(l.imageName)
+	 if err != nil { panic(err) }
+
+	 if !local {
+
+		 err := l.cli.PullImage(l.imageName)
+		 if err != nil { panic(err) }
+	}
+
+	id,err := l.cli.CreateContainer(l.imageName,l.mounts)
+	if err != nil { panic(err) }
+
+
+		err = l.cli.JoinContainer(id)
+		if err != nil { panic(err) }
+
+
+	err = l.cli.StartContainer(id)
+	if err != nil { panic(err) }
+
+
+
+		err = l.cli.WaitForContainer(id)
+		if err != nil { panic(err) }
+}
+
 func (l *launcher) SetMaven(loc string) {
 
-	l.maven=toMountPoint(loc)
+	l.mounts["maven"]=toMountPoint(loc)
 
 }
 
 
 func (l *launcher) SetSource(loc string) {
 
-		l.source=toMountPoint(loc)
+		l.mounts["source"]=toMountPoint(loc)
 }
 
 
@@ -53,8 +89,12 @@ func (l *launcher) Run() {
 
 	// build required local things
 	// source code location...
-	buildLocation(l.source)
-	buildLocation(l.maven)
+	l.buildLocation(l.mounts["source"])
+	l.buildLocation(l.mounts["maven"])
+
+	// now run the nog image
+
+	l.LaunchContainer()
 
 
 }
@@ -64,11 +104,12 @@ func (l *launcher) Display() {
   fmt.Println("Nog config")
   fmt.Printf("mode   : %s\n",l.mode)
 	fmt.Printf("image  : %s\n",l.imageName)
-	fmt.Printf("maven  : %v\n",l.maven)
-	fmt.Printf("source : %v\n",l.source)
+	fmt.Printf("maven  : %v\n",l.mounts["maven"])
+	fmt.Printf("source : %v\n",l.mounts["source"])
 
 
 }
+
 
 func toMountPoint(location string) (*mountPoint) {
 
@@ -76,7 +117,7 @@ func toMountPoint(location string) (*mountPoint) {
 
 	if  strings.HasPrefix(strings.ToLower(location),"vol:") {
 			mp.Location=location[4:]
-			mp.Type="vol"
+			mp.Type="volume"
 			return mp
 	}
 
@@ -90,7 +131,7 @@ func toMountPoint(location string) (*mountPoint) {
 	}
 
 	mp.Location,_ = filepath.Abs(location)
-	mp.Type="file"
+	mp.Type="bind"
 
 	return mp
 
@@ -112,9 +153,9 @@ func IsLocalDir(file string) (bool,error) {
 
 }
 
-func buildLocation(mp *mountPoint) {
+func (l *launcher) buildLocation(mp *mountPoint) {
 
-	if mp.Type=="file" {
+	if mp.Type=="bind" {
 			exists,err := IsLocalDir(mp.Location)
 			if err!=nil {
 				panic(err)
@@ -124,8 +165,8 @@ func buildLocation(mp *mountPoint) {
 			}
 	}
 
-	if mp.Type=="vol" {
-			err := mkDockerVol(mp.Location)
+	if mp.Type=="volume" {
+			err := l.cli.CreateVolume(mp.Location)
 			if err!=nil {
 						panic(err)
 			}

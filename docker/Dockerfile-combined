@@ -55,16 +55,16 @@ COPY --from=builder /etc/yum.repos.d/yarn.repo  /etc/yum.repos.d/yarn.repo
 
 RUN microdnf install yarn shadow-utils  gcc glibc-devel zlib-devel libstdc++
 
-RUN useradd -ms /bin/bash qlauncher
+RUN useradd -ms /bin/bash nog
 
-USER qlauncher
+USER nog
 
 # copy over tools
 
-COPY --from=builder /tools  /home/qlauncher/tools
+COPY --from=builder /tools  /home/nog/tools
 
-ENV JAVA_HOME=/home/qlauncher/tools/java
-ENV PATH=/home/qlauncher/tools/maven/bin:/home/qlauncher/tools/java/bin:$PATH
+ENV JAVA_HOME=/home/nog/tools/java
+ENV PATH=/home/nog/tools/maven/bin:/home/nog/tools/java/bin:$PATH
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 
 # validate tools
@@ -77,8 +77,10 @@ EXPOSE 8080
 EXPOSE 8081
 EXPOSE 5005
 
-COPY runner.sh /home/qlauncher/tools
+COPY runner.sh /home/nog/tools
 
-WORKDIR /home/qlauncher/src
+WORKDIR /home/nog/src
 
-#ENTRYPOINT  ["/home/qlauncher/tools/runner.sh"]
+#ENTRYPOINT  ["/home/nog/tools/runner.sh"]
+
+LABEL nog=true

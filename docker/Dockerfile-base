@@ -42,3 +42,5 @@ WORKDIR /extras/theia/
 
 RUN yarn
 RUN yarn theia build
+
+LABEL nog=true

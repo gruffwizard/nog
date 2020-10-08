@@ -5,3 +5,5 @@ FROM gruffwizard/nog-quarkus:latest as main
 USER nog
 COPY --from=builder /extras/theia  /home/nog/tools/theia
 EXPOSE 9001
+
+LABEL nog=true

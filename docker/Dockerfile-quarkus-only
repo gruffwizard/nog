@@ -37,3 +37,5 @@ RUN mkdir -p /home/nog/src
 WORKDIR /home/nog/src
 
 #ENTRYPOINT  ["/home/nog/tools/runner.sh"]
+
+LABEL nog=true
