@@ -7,3 +7,4 @@ COPY --from=builder /extras/theia  /home/nog/tools/theia
 EXPOSE 9001
 
 LABEL nog=true
+COPY runner.sh /home/nog/tools

@@ -10,6 +10,7 @@ import (
     "github.com/docker/docker/api/types/volume"
   	"github.com/docker/docker/api/types/container"
 		"github.com/docker/docker/api/types/mount"
+	 "github.com/docker/go-connections/nat"
 "io"
   	"github.com/docker/docker/pkg/stdcopy"
 		"fmt"
@@ -176,6 +177,7 @@ func  (nog *nogDockerClient) CreateContainer(image string,mounts map[string]*mou
 
 	// build mounts
 	mountConfig := []mount.Mount{}
+
 	for k,v := range mounts {
 
 		target:=CommonMounts[k]
@@ -189,8 +191,15 @@ func  (nog *nogDockerClient) CreateContainer(image string,mounts map[string]*mou
 		mountConfig=append(mountConfig,mount.Mount{Type:bind,Source:v.Location,Target:target})
 	}
 
+	// build ports
+	data := []string{ "8080:8080","8081:8081","9001:9001"}
+
+	_,portsConfig,_:= nat.ParsePortSpecs(data)
+	fmt.Printf("\nNat:%v",portsConfig)
+
 	hostConfig := container.HostConfig{
 		Mounts: mountConfig,
+		PortBindings: portsConfig,
 	}
 
 
