@@ -261,6 +261,22 @@ func  (nog *nogDockerClient) WaitForContainer(ID string) (error) {
 }
 
 
+
+
+
+func  (nog *nogDockerClient) StopContainer(ID string) (error) {
+
+  return nog.cli.ContainerStop(nog.ctx,ID, nil)
+	
+}
+
+func  (nog *nogDockerClient) EndContainer(ID string) (error) {
+
+
+  return nog.cli.ContainerRemove(nog.ctx,ID, types.ContainerRemoveOptions{})
+}
+
+
 func  (nog *nogDockerClient) ShowLogs(ID string) (error) {
 
   	out, err := nog.cli.ContainerLogs(nog.ctx, ID, types.ContainerLogsOptions{ShowStdout: true,ShowStderr:true})

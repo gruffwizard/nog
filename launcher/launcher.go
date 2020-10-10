@@ -7,8 +7,8 @@ import (
   "fmt"
   "path/filepath"
 	"os/user"
-
-
+	"os/signal"
+	"syscall"
 
 )
 
@@ -18,12 +18,14 @@ type launcher struct {
 	imageName string
 	mounts map[string]*mountPoint
 	cli *nogDockerClient
+	id string
 }
 
 type mountPoint struct {
 	Type string
 	Location string
 }
+
 
 func NewDevLauncher() *launcher {
 
@@ -36,7 +38,28 @@ func NewDevLauncher() *launcher {
 	if (err!=nil) { panic(err)}
 	l.cli=client
 
+	l.setupExit()
+
+
 	return l
+
+}
+
+func (l *launcher) setupExit() {
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+	  <- sigs
+	  l.cleanUp()
+	  os.Exit(0)
+	}()
+}
+
+func  (l *launcher)  cleanUp() {
+
+	l.cli.StopContainer(l.id)
+	l.cli.EndContainer(l.id)
 
 }
 
@@ -55,18 +78,18 @@ func  (l *launcher)  LaunchContainer() {
 	id,err := l.cli.CreateContainer(l.imageName,l.mounts)
 	if err != nil { panic(err) }
 
+	l.id=id
 
-		err = l.cli.JoinContainer(id)
-		if err != nil { panic(err) }
+	err = l.cli.JoinContainer(id)
+	if err != nil { panic(err) }
 
 
 	err = l.cli.StartContainer(id)
 	if err != nil { panic(err) }
 
+	err = l.cli.WaitForContainer(id)
+	if err != nil { panic(err) }
 
-
-		err = l.cli.WaitForContainer(id)
-		if err != nil { panic(err) }
 }
 
 func (l *launcher) SetMaven(loc string) {
