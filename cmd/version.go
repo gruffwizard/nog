@@ -18,35 +18,31 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-)
-
-// variables set by main launcher
-var (
- NogVersion string
- NogCommit string
- NogBuiltDate string
- NogBuiltBy string
+	"github.com/gruffwizard/nog/cli"
 )
 
 
-var versionCmd = &cobra.Command{
+func NewVersion(l *cli.CLI) *cobra.Command {
+
+versionCmd := &cobra.Command{
 	Use:   "version",
 	Short: "Display Nog version",
 	Long: `Displays version info. Combine with -v to see extended data`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Example: "nog version",
+	RunE: func(cmd *cobra.Command, args []string) (error) {
 
-		fmt.Println(NogVersion)
+		fmt.Println(l.NogVersion)
 
-		if Verbose {
-				fmt.Printf("commit  : %s\n",NogCommit)
-				fmt.Printf("built   : %s\n",NogBuiltDate)
-				fmt.Printf("builtby : %s\n",NogBuiltBy)
+
+		if cli.Verbose {
+				fmt.Printf("commit  : %s\n",l.NogCommit)
+				fmt.Printf("built   : %s\n",l.NogBuiltDate)
+				fmt.Printf("builtby : %s\n",l.NogBuiltBy)
 		}
 
+		return nil
 	},
 }
-
-func init() {
-	rootCmd.AddCommand(versionCmd)
+return versionCmd
 
 }

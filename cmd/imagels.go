@@ -17,12 +17,13 @@ package cmd
 
 import (
 
-"github.com/gruffwizard/nog/launcher"
 	"github.com/spf13/cobra"
+	"github.com/gruffwizard/nog/cli"
 )
 
-// imagelsCmd represents the imagels command
-var imagelsCmd = &cobra.Command{
+func NewImageLS(cli *cli.CLI) *cobra.Command {
+
+imagelsCmd := &cobra.Command{
 	Use:   "ls",
 	Short: "List local Nog Images",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -32,11 +33,9 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		launcher.ListImages()
+		cli.ListImages()
 	},
 }
-
-func init() {
-	imageCmd.AddCommand(imagelsCmd)
+return imagelsCmd
 
 }

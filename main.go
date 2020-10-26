@@ -15,22 +15,45 @@ limitations under the License.
 */
 package main
 
-import "github.com/gruffwizard/nog/cmd"
-
-
-var (
-    version = "dev"
-    commit  = "none"
-    date    = "unknown"
-    builtBy = "unknown"
+import (
+		"github.com/gruffwizard/nog/cli"
+		"github.com/gruffwizard/nog/cmd"
+		"os"
+		"os/signal"
+		"syscall"
 )
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+	builtBy = "unknown"
+)
+
+
+
 
 func main() {
 
-	cmd.NogVersion=version
-	cmd.NogCommit=commit
-	cmd.NogBuiltDate=date
-	cmd.NogBuiltBy=builtBy
+	cli :=new(cli.CLI)
+	registerTearDown(cli)
+
+	cli.NogVersion   = version
+	cli.NogCommit    = commit
+	cli.NogBuiltDate = date
+	cli.NogBuiltBy   = builtBy
+
+	cmd := cmd.NewCMD(cli)
 
 	cmd.Execute()
+}
+
+func registerTearDown(cli *cli.CLI) {
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+	  <- sigs
+	  cli.CleanUp()
+	  os.Exit(0)
+	}()
 }

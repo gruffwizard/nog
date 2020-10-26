@@ -17,21 +17,21 @@ package cmd
 
 import (
 
-	"github.com/gruffwizard/nog/launcher"
 	"github.com/spf13/cobra"
+	"github.com/gruffwizard/nog/cli"
 )
 
-// lsCmd represents the ls command
-var lsCmd = &cobra.Command{
+func NewVolLS(cli *cli.CLI) *cobra.Command {
+
+lsCmd := &cobra.Command{
 	Use:   "ls",
 	Short: "list volumes created by nog",
 	Long: `Lists volumes with nog=true labels`,
 	Run: func(cmd *cobra.Command, args []string) {
-				launcher.ListVolumes()
+				cli.ListVolumes()
 	},
 }
 
-func init() {
-	volumeCmd.AddCommand(lsCmd)
+return lsCmd
 
 }

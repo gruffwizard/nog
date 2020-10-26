@@ -17,48 +17,51 @@ package cmd
 
 import (
 
-	"errors"
 	"github.com/spf13/cobra"
-	"github.com/gruffwizard/nog/launcher"
+	"github.com/gruffwizard/nog/cli"
+
 )
 
-// devCmd represents the dev command
-var devCmd = &cobra.Command{
-	Use:   "dev [git-repo]",
+
+func NewDev(l *cli.CLI) *cobra.Command {
+
+	dev :=  &cobra.Command{
+	Use:   "dev",
 	Short: "quarkus in dev mode",
 	Long: `
 	Runs the quarkus experience in conjunction with your IDE
-	Launches quarkus in dev mode.
-	Source and maven repos will be by default be local. To use
-	volume managed source or maven repos overide with the -s and -m options
+
+	Source is assumed to be in current directory and there should be a pom.xml file present
+
+	Your local maven cache is shared with Nog. This may have side effects if your
+	local machine is not linux based and you use platform specific artifacts.
+
+	To use a seperate maven repository specify the -m option to provide an alternative maven
+	repository location.
+
 	`,
+
 	Args: func(cmd *cobra.Command, args []string) error {
-	    if len(args) > 1 {
-	      return errors.New("too many arguments")
-	    }
 
-			return nil
+		return Validate(l)
 
-	  },
-	Run: func(cmd *cobra.Command, args []string) {
+	},
 
-		launcher := launcher.NewDevLauncher()
-		if mvnLoc=="" { mvnLoc="file:~/.m2" }
-		if srcLoc=="" { srcLoc="."}
-		
-		launcher.SetMaven(mvnLoc)
-		launcher.SetSource(srcLoc)
+	RunE: func(cmd *cobra.Command, args []string) error {
 
-		if Verbose {
-			launcher.Display()
-		}
-
-		launcher.Run()
-
+		return l.Run(args)
 
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(devCmd)
+dev.Flags().StringVarP(&l.MvnVol, "mvnvol", "m","", "maven cache volume")
+dev.Flags().StringVarP(&l.MvnDir, "mvndir", "d","", "maven directory")
+dev.Flags().StringVarP(&l.SrcVol, "srcvol", "l","", "source volume")
+dev.Flags().StringVarP(&l.SrcDir, "srcdir", "s","", "source directory")
+
+dev.Flags().BoolVarP(&l.IDEMode, "ide", "i",false, "use containerised ide")
+
+
+
+	return dev
 }

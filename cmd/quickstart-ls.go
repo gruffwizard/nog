@@ -14,22 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 package cmd
-	
+
 import (
 
 	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewVol(cli *cli.CLI) *cobra.Command {
+func NewQuickStartLS(cli *cli.CLI) *cobra.Command {
 
-volumeCmd := &cobra.Command{
-	Use:   "volume",
-	Aliases: []string{"vol"},
-	Short: "main entry for actions related to nog tagged docker volumes",
-	Long: ``,
-
+qslsCmd := &cobra.Command{
+	Use:   "ls",
+	Short: "list quickstart samples",
+	Long: `list quickstart samples`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+				return cli.ListQuickStarts()
+	},
 }
 
-return volumeCmd
+return qslsCmd
+
 }

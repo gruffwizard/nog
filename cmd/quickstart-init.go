@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 Steve Poole  gruff.wizard@yahoo.com
+Copyright © 2020 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,37 +16,29 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
+
 	"github.com/spf13/cobra"
-	
+	"github.com/gruffwizard/nog/cli"
+	"errors"
 )
 
+func NewQuickStartInit(cli *cli.CLI) *cobra.Command {
 
+qsInitCmd := &cobra.Command{
+	Use:   "init",
+	Short: "create local quickstart sample",
+	Long: `create local quickstart sample`,
+	Args: func(cmd *cobra.Command, args []string) error {
 
-// editCmd represents the edit command
-var editCmd = &cobra.Command{
-	Use:   "edit [ git-repo ]",
-	Short: "quarkus in full container mode",
-	Long: `
-Runs the quarkus experience fully containers
-Lauches a browser based editor based on Eclipse Thea with quarkus enabled.
-Source and maven repos will be by default managed in volumes. To use
-local source or maven repos overide with the -s and -m options
-`,
-Args: func(cmd *cobra.Command, args []string) error {
-    if len(args) > 1 {
-      return errors.New("too many arguments")
-    }
+		if len(args)!=1 { return errors.New("must specify quickstart sample name (use nog qs ls to list)")}
 		return nil
+	},
 
-  },
 	Run: func(cmd *cobra.Command, args []string) {
-
-
+				cli.InitQuickStart(args[0])
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(editCmd)
+return qsInitCmd
 
 }

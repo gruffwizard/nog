@@ -1,4 +1,4 @@
-package launcher
+package errors
 
 type ErrorType int
 
