@@ -15,9 +15,7 @@ func (nog *NogDockerClient) Images() ([]NogImage,error) {
   f.Add("label","nog=true")
 
 	imageinfo, err := nog.cli.ImageList(nog.ctx, types.ImageListOptions{Filters:f})
-  if err != nil {
-		return nil,err
-	}
+  if err != nil {return nil,err}
 
 	noglist := []NogImage{}
 

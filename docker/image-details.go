@@ -15,7 +15,7 @@ func (nog *NogDockerClient) ImagePortDetails(name string) ( nat.PortMap ,error) 
   if err!=nil { return nil,err}
 
   m:= nat.PortMap{}
-  for p,_ := range i.ContainerConfig.ExposedPorts {
+  for p := range i.ContainerConfig.ExposedPorts {
     //[]nat.PortBinding
       m[p]=[]nat.PortBinding{nat.PortBinding{HostPort:string(p)}}
   }
