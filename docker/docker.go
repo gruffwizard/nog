@@ -102,7 +102,7 @@ func (v *NogVolume) CreatedByNog() (bool) {
 
 func NewDockerClient() (*NogDockerClient,error) {
 
-  cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+  cli, err := client.NewEnvClient()
 	if err != nil {
 		return nil,err
 	}

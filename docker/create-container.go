@@ -50,7 +50,7 @@ func  (nog *NogDockerClient) CreateContainer(image string,cmd []string,m *mounts
 			Tty:   true,
 			Labels: labels,
 	    Env: envs,
-  	}, &hostConfig, nil, nil, "")
+  	}, &hostConfig,nil, "")
 
     if err!=nil { return "",err }
 
