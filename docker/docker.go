@@ -126,11 +126,9 @@ func NewDockerClient() (*NogDockerClient,error) {
 func  (nog *NogDockerClient) ShowLogs1(ID string) (error) {
 
   	out, err := nog.cli.ContainerLogs(nog.ctx, ID, types.ContainerLogsOptions{ShowStdout: true,ShowStderr:true})
-  	if err != nil {
-  		return err
-  	}
+  	if err != nil { return err }
 
-  	stdcopy.StdCopy(os.Stdout, os.Stderr, out)
+  	_,_ = stdcopy.StdCopy(os.Stdout, os.Stderr, out)
 
     return nil
 }

@@ -24,15 +24,14 @@ func (l *CLI) Run(args []string) error {
 
 
   image:=QuarkusImage
-  mode:="dev"
 
   if l.IDEMode {
-    mode="ide"
+
     image=TheiaImage
     envs=append(envs,"NOG_START_IDE=1")
   }
 
-  fmt.Printf("Running Nog in %s mode. Enjoy!\n",mode)
+  fmt.Println("Running Nog - Enjoy!")
 
   mounts := docker.NewMounts()
 

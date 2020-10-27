@@ -44,14 +44,14 @@ func  (nog *NogDockerClient) JoinContainer(ID string) (error) {
                 return
             }
 
-            w.Write(append(data, '\n'))
+            _,_= w.Write(append(data, '\n'))
         }
     }(body.Conn)
 
     // everything else ..
-  
-    go  io.Copy(os.Stdout, body.Reader)
-    go  io.Copy(os.Stderr, body.Reader)
+
+    go io.Copy(os.Stdout, body.Reader)
+    go io.Copy(os.Stderr, body.Reader)
 	}
 
 	return nil

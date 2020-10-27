@@ -16,8 +16,8 @@ func  (cli *CLI)  CleanUp() error {
   c,err := docker.NewDockerClient()
   if err!=nil { return err}
 
-	c.StopContainer(cli.ActiveID)
-	c.EndContainer(cli.ActiveID)
+	_ = c.StopContainer(cli.ActiveID)
+	_ = c.EndContainer(cli.ActiveID)
 
   }
   return nil

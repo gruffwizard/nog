@@ -28,7 +28,7 @@ lsCmd := &cobra.Command{
 	Short: "list volumes created by nog",
 	Long: `Lists volumes with nog=true labels`,
 	Run: func(cmd *cobra.Command, args []string) {
-				cli.ListVolumes()
+			_ = 	cli.ListVolumes()
 	},
 }
 

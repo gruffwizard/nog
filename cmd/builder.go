@@ -6,9 +6,6 @@ import (
   "github.com/gruffwizard/nog/cli"
 )
 
-
-var config cli.Config
-
 func NewCMD(nog *cli.CLI) *cobra.Command  {
 
     root:=NewRoot(nog)
