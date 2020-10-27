@@ -37,6 +37,7 @@ func (l *CLI) Run(args []string) error {
   mounts := docker.NewMounts()
 
   if l.QuickStart!="" { envs=append(envs,"NOG_QUICKSTART="+l.QuickStart) }
+  if l.QuickStartOnly { envs=append(envs,"NOG_QUICKSTART_ONLY=1") }
 
 
   cmd:=[]string{"/home/nog/tools/nog.sh"}

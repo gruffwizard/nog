@@ -25,7 +25,7 @@ func NewCMD(nog *cli.CLI) *cobra.Command  {
 
     qs:=NewQuickStart(nog)
     qs.AddCommand(NewQuickStartLS(nog))
-    qs.AddCommand(NewQuickStartInit(nog))
+    qs.AddCommand(NewQuickStartCP(nog))
 
     root.AddCommand(qs)
 

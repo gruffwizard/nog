@@ -15,6 +15,7 @@ NogBuiltBy string
 ActiveID string
 
 QuickStart string
+QuickStartOnly bool
 
 SrcDir   string
 SrcVol   string

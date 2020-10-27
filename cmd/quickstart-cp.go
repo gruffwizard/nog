@@ -22,23 +22,40 @@ import (
 	"errors"
 )
 
-func NewQuickStartInit(cli *cli.CLI) *cobra.Command {
+func NewQuickStartCP(l *cli.CLI) *cobra.Command {
 
-qsInitCmd := &cobra.Command{
-	Use:   "init",
-	Short: "create local quickstart sample",
-	Long: `create local quickstart sample`,
-	Args: func(cmd *cobra.Command, args []string) error {
+qsCmd := &cobra.Command{
+	Use:   "copy",
+	Aliases: []string{"cp"},
+	Short: "copy quickstart locally",
+	Long: `copy quickstart locally`,
 
-		if len(args)!=1 { return errors.New("must specify quickstart sample name (use nog qs ls to list)")}
-		return nil
-	},
+		Args: func(cmd *cobra.Command, args []string) error {
 
-	Run: func(cmd *cobra.Command, args []string) {
-				cli.InitQuickStart(args[0])
-	},
+
+			if len(args)<1 { return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")}
+
+			err := Validate(l)
+
+			if err!=nil { return err}
+
+			return cli.CheckValidQuickStart(args[0])
+
+		},
+
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			l.QuickStart=args[0]
+			l.QuickStartOnly=true
+			l.IDEMode=false
+
+
+			return l.Run(args[1:])
+
+		},
+
 }
 
-return qsInitCmd
+return qsCmd
 
 }
