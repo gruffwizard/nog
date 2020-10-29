@@ -9,8 +9,9 @@ import (
 	"github.com/docker/docker/api/types"
 
 	"github.com/docker/docker/pkg/stdcopy"
-
+	"net"
 	"fmt"
+
 )
 
 type mountPoint struct {
@@ -115,4 +116,17 @@ func (nog *NogDockerClient) ShowLogs1(ID string) error {
 	_, _ = stdcopy.StdCopy(os.Stdout, os.Stderr, out)
 
 	return nil
+}
+
+func isPortFree(port string) bool {
+
+	ln, err := net.Listen("tcp", ":" + port)
+
+  if err != nil {
+    return false
+  }
+
+  ln.Close()
+
+	return true
 }

@@ -10,4 +10,5 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/spf13/cobra v1.1.1
 	gopkg.in/yaml.v2 v2.3.0
+	github.com/msoap/byline v1.1.1
 )

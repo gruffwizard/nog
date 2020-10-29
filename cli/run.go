@@ -79,7 +79,7 @@ func (l *CLI) Run(args []string) error {
 	c:=l.buildDef(args)
 
 	if Verbose { c.Display() }
-	
+
 
 	d, err := docker.NewDockerClient()
 	d.Verbose = Verbose
@@ -106,6 +106,7 @@ func (l *CLI) Run(args []string) error {
 
 	err = d.StartContainer(id)
 	if err != nil {
+			println(err)
 		return err
 	}
 

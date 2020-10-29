@@ -3,6 +3,8 @@ package docker
 import (
 	"github.com/docker/docker/api/types/mount"
 	"fmt"
+	"strings"
+	"errors"
 	"github.com/docker/docker/api/types/container"
 )
 
@@ -53,11 +55,14 @@ func (nog *NogDockerClient) CreateContainer(c ContainerDef) (string, error) {
 		return "", err
 	}
 
-	if nog.Verbose {
+
 		for p, b := range portsConfig {
-			fmt.Printf(" port %v : %v\n", p, b[0])
+			pno := strings.Split(string(p),"/")
+			if ! isPortFree(pno[0]) {
+				return "",errors.New("port "+pno[0]+" is already in use")
+			}
+			if nog.Verbose { fmt.Printf(" port %v : %v\n", p, b[0]) }
 		}
-	}
 
 	hostConfig := container.HostConfig{
 		Mounts:       mountConfig,
