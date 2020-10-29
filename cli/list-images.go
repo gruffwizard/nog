@@ -9,11 +9,10 @@ func (cli *CLI) ListImages() error {
 
 	c, err := docker.NewDockerClient()
 
-	if err != nil {
-		return err
-	}
+	if err != nil { return err}
 
 	l, err := c.Images()
+	if err != nil { return err}
 
 	for _, v := range l {
 		for _, n := range v.Tags {

@@ -13,7 +13,7 @@ func IsSafeDirectory(desc string, dir string) error {
 		return errors.New(desc + " is empty")
 	}
 
-	path, err := filepath.Abs(dir)
+	path, _ := filepath.Abs(dir)
 
 	info, err := os.Stat(path)
 	if os.IsNotExist(err) {
@@ -24,7 +24,7 @@ func IsSafeDirectory(desc string, dir string) error {
 		return errors.New(desc + " " + dir + " is not a directory")
 	}
 
-	home, err := HomeDir()
+	home, _ := HomeDir()
 	if home == path {
 		return errors.New(desc + " " + dir + " is user home directory and cannot be used as a mount point")
 	}

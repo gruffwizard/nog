@@ -8,12 +8,10 @@ import (
 func (cli *CLI) ListVolumes() error {
 
 	c, err := docker.NewDockerClient()
-
-	if err != nil {
-		return err
-	}
+	if err != nil { return err }
 
 	l, err := c.ListVolumes()
+	if err != nil { return err }
 
 	for _, v := range l {
 
