@@ -16,28 +16,30 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
-	"github.com/gruffwizard/nog/cli"
 	"errors"
+	"github.com/gruffwizard/nog/cli"
+	"github.com/spf13/cobra"
 )
 
 func newQuickStartCP(l *cli.CLI) *cobra.Command {
 
-qsCmd := &cobra.Command{
-	Use:   "copy",
-	Aliases: []string{"cp"},
-	Short: "copy quickstart locally",
-	Long: `copy quickstart locally`,
+	qsCmd := &cobra.Command{
+		Use:     "copy",
+		Aliases: []string{"cp"},
+		Short:   "copy quickstart locally",
+		Long:    `copy quickstart locally`,
 
 		Args: func(cmd *cobra.Command, args []string) error {
 
-
-			if len(args)<1 { return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")}
+			if len(args) < 1 {
+				return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")
+			}
 
 			err := validate(l)
 
-			if err!=nil { return err}
+			if err != nil {
+				return err
+			}
 
 			return cli.CheckValidQuickStart(args[0])
 
@@ -45,17 +47,15 @@ qsCmd := &cobra.Command{
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 
-			l.QuickStart=args[0]
-			l.QuickStartOnly=true
-			l.IDEMode=false
-
+			l.QuickStart = args[0]
+			l.QuickStartOnly = true
+			l.IDEMode = false
 
 			return l.Run(args[1:])
 
 		},
+	}
 
-}
-
-return qsCmd
+	return qsCmd
 
 }

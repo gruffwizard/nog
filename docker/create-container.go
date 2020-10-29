@@ -1,58 +1,84 @@
 package docker
 
 import (
-
-  "github.com/docker/docker/api/types/mount"
- //"github.com/docker/go-connections/nat"
- "fmt"
- "github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/mount"
+	"fmt"
+	"github.com/docker/docker/api/types/container"
 )
 
-func  (nog *NogDockerClient) CreateContainer(image string,cmd []string,m *mounts,envs []string) (string,error) {
+
+type ContainerDef struct {
+	args []string
+	envs []string
+	Image string
+	Cmd []string
+	mounts map[string]*mountPoint
+}
+
+func (c *ContainerDef) AddEnv(k string,v string) {
+				c.envs = append(c.envs, k+"="+v)
+}
+
+func (c *ContainerDef) Display() {
+		fmt.Printf("Image : %s\n",c.Image)
+		fmt.Printf("Cmd   : %v\n",c.Cmd)
+		fmt.Printf("Args  : %v\n",c.args)
+		fmt.Printf("Envs  : %v\n",c.envs)
+		for k, v := range c.mounts {
+			fmt.Printf(" %s mount : %s -> %s\n", v.Type, k, v.Location)
+		}
+
+}
+//image string, cmd []string, m *mounts, envs []string
+func (nog *NogDockerClient) CreateContainer(c ContainerDef) (string, error) {
 
 	labels := make(map[string]string)
-  labels["nog"]="true"
+	labels["nog"] = "true"
 
 	// build mounts
 	mountConfig := []mount.Mount{}
 
-	for k,v := range m.mounts {
+	for k, v := range c.mounts {
 
 		bind := mount.TypeBind
-		if v.Type=="volume" { bind=mount.TypeVolume}
+		if v.Type == "volume" {
+			bind = mount.TypeVolume
+		}
 
-		mountConfig=append(mountConfig,mount.Mount{Type:bind,Source:v.Location,Target:k})
+		mountConfig = append(mountConfig, mount.Mount{Type: bind, Source: v.Location, Target: k})
 	}
 
+	portsConfig, err := nog.ImagePortDetails(c.Image)
+	if err != nil {
+		return "", err
+	}
 
-  portsConfig,err :=nog.ImagePortDetails(image)
-  if err!=nil { return "",err}
-
-  if nog.Verbose {
-    for p,b := range portsConfig {
-      fmt.Printf(" port %v : %v\n",p,b[0])
-    }
-  }
+	if nog.Verbose {
+		for p, b := range portsConfig {
+			fmt.Printf(" port %v : %v\n", p, b[0])
+		}
+	}
 
 	hostConfig := container.HostConfig{
-		Mounts: mountConfig,
+		Mounts:       mountConfig,
 		PortBindings: portsConfig,
 	}
 
+	resp, err := nog.cli.ContainerCreate(nog.ctx, &container.Config{
+		Image:        c.Image,
+		Cmd:          c.Cmd,
+		AttachStdout: true,
+		AttachStderr: true,
+		AttachStdin:  true,
+		OpenStdin:    true,
+		Tty:          true,
+		Labels:       labels,
+		Env:          c.envs,
+	}, &hostConfig, nil, "")
 
-  	resp, err := nog.cli.ContainerCreate(nog.ctx, &container.Config{
-  		Image: image,
-  		Cmd:   cmd,
-			AttachStdout: true,
-	    AttachStderr: true,
-			AttachStdin: true,
-			OpenStdin:   true,
-			Tty:   true,
-			Labels: labels,
-	    Env: envs,
-  	}, &hostConfig,nil, "")
+	if err != nil {
+		return "", err
+	}
 
-    if err!=nil { return "",err }
-
-  	return resp.ID,nil
+	return resp.ID, nil
 }

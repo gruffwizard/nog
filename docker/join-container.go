@@ -1,22 +1,19 @@
 package docker
 
 import (
-  "fmt"
- "bufio"
- "os"
- "io"
-     "github.com/docker/docker/api/types"
-    // "strings"
+	"bufio"
+	"fmt"
+	"github.com/docker/docker/api/types"
+	"io"
+	"os"
+	// "strings"
 )
 
-
-
-func  (nog *NogDockerClient) JoinContainer(ID string) (error) {
-
+func (nog *NogDockerClient) JoinContainer(ID string) error {
 
 	var inout chan []byte
 
-	if body, err := nog.cli.ContainerAttach(nog.ctx,ID, types.ContainerAttachOptions{
+	if body, err := nog.cli.ContainerAttach(nog.ctx, ID, types.ContainerAttachOptions{
 		Stream: true,
 		Stdout: true,
 		Stderr: true,
@@ -25,33 +22,33 @@ func  (nog *NogDockerClient) JoinContainer(ID string) (error) {
 		panic(err)
 	} else {
 
-    // stdin handler and closer
+		// stdin handler and closer
 
 		inout = make(chan []byte)
 		go func() {
-        scanner := bufio.NewScanner(os.Stdin)
-        for scanner.Scan() {
-           inout <- []byte(scanner.Text())
-        }
-    }()
+			scanner := bufio.NewScanner(os.Stdin)
+			for scanner.Scan() {
+				inout <- []byte(scanner.Text())
+			}
+		}()
 
 		go func(w io.WriteCloser) {
-        for {
-            data, ok := <-inout
-            if !ok {
-                fmt.Println("!ok")
-                w.Close()
-                return
-            }
+			for {
+				data, ok := <-inout
+				if !ok {
+					fmt.Println("!ok")
+					w.Close()
+					return
+				}
 
-            _,_= w.Write(append(data, '\n'))
-        }
-    }(body.Conn)
+				_, _ = w.Write(append(data, '\n'))
+			}
+		}(body.Conn)
 
-    // everything else ..
+		// everything else ..
 
-    go io.Copy(os.Stdout, body.Reader)
-    go io.Copy(os.Stderr, body.Reader)
+		go io.Copy(os.Stdout, body.Reader)
+		go io.Copy(os.Stderr, body.Reader)
 	}
 
 	return nil

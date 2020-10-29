@@ -1,76 +1,90 @@
 package helpers
 
 import (
-  "path/filepath"
-  "os"
-  "os/user"
-  "errors"
+	"errors"
+	"os"
+	"os/user"
+	"path/filepath"
 )
 
-func IsSafeDirectory(desc string,dir string) error {
+func IsSafeDirectory(desc string, dir string) error {
 
-  if dir==""  { return errors.New(desc+" is empty") }
+	if dir == "" {
+		return errors.New(desc + " is empty")
+	}
 
-  path,err:=filepath.Abs(dir)
+	path, err := filepath.Abs(dir)
 
-  info, err := os.Stat(path)
-  if os.IsNotExist(err) { return err }
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return err
+	}
 
-  if !info.IsDir() {  return errors.New(desc+" "+dir+" is not a directory") }
+	if !info.IsDir() {
+		return errors.New(desc + " " + dir + " is not a directory")
+	}
 
-  home,err:=HomeDir()
-  if home==path { return errors.New(desc+ " "+dir+" is user home directory and cannot be used as a mount point")}
+	home, err := HomeDir()
+	if home == path {
+		return errors.New(desc + " " + dir + " is user home directory and cannot be used as a mount point")
+	}
 
-  return nil
-
-}
-func FileExists(path string,name string) bool {
-
-    filename := filepath.Join(path,name)
-
-    info, err := os.Stat(filename)
-    if os.IsNotExist(err) {
-        return false
-    }
-
-    return !info.IsDir()
-}
-
-func HomeDir() (string,error) {
-
-  user, err := user.Current()
-  if err != nil {return "",err }
-
-  return user.HomeDir,nil
+	return nil
 
 }
+func FileExists(path string, name string) bool {
 
+	filename := filepath.Join(path, name)
 
-func CurrentDir() (string,error) {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
 
-  current,err := os.Getwd()
+	return !info.IsDir()
+}
 
-  if err!=nil {return "",err }
+func HomeDir() (string, error) {
 
-  return current,nil
+	user, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+
+	return user.HomeDir, nil
 
 }
 
-func MavenLocation() (string,error) {
+func CurrentDir() (string, error) {
 
+	current, err := os.Getwd()
 
-  current, err := HomeDir()
-  if err != nil {return "",err }
+	if err != nil {
+		return "", err
+	}
 
-  mvnrepo:=filepath.Join(current,".m2")
+	return current, nil
 
-  info, err := os.Stat(mvnrepo)
-  if os.IsNotExist(err) {
-      return "",err
-  }
+}
 
-  if !info.IsDir() { return "",errors.New("maven location ~/.m2 is not a directory")}
+func MavenLocation() (string, error) {
 
-  return mvnrepo,nil
+	current, err := HomeDir()
+	if err != nil {
+		return "", err
+	}
+
+	mvnrepo := filepath.Join(current, ".m2")
+
+	info, err := os.Stat(mvnrepo)
+	if os.IsNotExist(err) {
+		return "", err
+	}
+
+	if !info.IsDir() {
+		return "", errors.New("maven location ~/.m2 is not a directory")
+	}
+
+	return mvnrepo, nil
 
 }

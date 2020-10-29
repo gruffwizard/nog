@@ -1,25 +1,24 @@
 package cli
 
-
 import (
-    "github.com/gruffwizard/nog/docker"
-    "fmt"
+	"fmt"
+	"github.com/gruffwizard/nog/docker"
 )
 
+func (cli *CLI) CleanUp() {
 
-func  (cli *CLI)  CleanUp()  {
+	if cli.ActiveID != "" {
 
-  if cli.ActiveID != "" {
+		fmt.Println("Nog closing down")
 
-	fmt.Println("Nog closing down")
+		c, err := docker.NewDockerClient()
+		if err != nil {
+			return
+		}
 
-  c,err := docker.NewDockerClient()
-  if err!=nil { return }
+		_ = c.StopContainer(cli.ActiveID)
+		_ = c.EndContainer(cli.ActiveID)
 
-	_ = c.StopContainer(cli.ActiveID)
-	_ = c.EndContainer(cli.ActiveID)
-
-  }
-
+	}
 
 }

@@ -17,32 +17,30 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
+	"github.com/spf13/cobra"
 )
-
 
 func newVersion(l *cli.CLI) *cobra.Command {
 
-versionCmd := &cobra.Command{
-	Use:   "version",
-	Short: "Display Nog version",
-	Long: `Displays version info. Combine with -v to see extended data`,
-	Example: "nog version",
-	RunE: func(cmd *cobra.Command, args []string) (error) {
+	versionCmd := &cobra.Command{
+		Use:     "version",
+		Short:   "Display Nog version",
+		Long:    `Displays version info. Combine with -v to see extended data`,
+		Example: "nog version",
+		RunE: func(cmd *cobra.Command, args []string) error {
 
-		fmt.Println(l.NogVersion)
+			fmt.Println(l.NogVersion)
 
+			if cli.Verbose {
+				fmt.Printf("commit  : %s\n", l.NogCommit)
+				fmt.Printf("built   : %s\n", l.NogBuiltDate)
+				fmt.Printf("builtby : %s\n", l.NogBuiltBy)
+			}
 
-		if cli.Verbose {
-				fmt.Printf("commit  : %s\n",l.NogCommit)
-				fmt.Printf("built   : %s\n",l.NogBuiltDate)
-				fmt.Printf("builtby : %s\n",l.NogBuiltBy)
-		}
-
-		return nil
-	},
-}
-return versionCmd
+			return nil
+		},
+	}
+	return versionCmd
 
 }

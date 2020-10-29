@@ -1,11 +1,9 @@
 package launcher
 
-import (
+import ()
 
-)
+func CheckForValidDockerVolume(vol string) (bool, error) {
 
-func CheckForValidDockerVolume(vol string) (bool,error) {
-
-  return true,nil
+	return true, nil
 
 }

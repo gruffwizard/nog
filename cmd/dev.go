@@ -16,19 +16,16 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
-
+	"github.com/spf13/cobra"
 )
-
 
 func newDev(l *cli.CLI) *cobra.Command {
 
-	dev :=  &cobra.Command{
-	Use:   "dev",
-	Short: "quarkus in dev mode",
-	Long: `
+	dev := &cobra.Command{
+		Use:   "dev",
+		Short: "quarkus in dev mode",
+		Long: `
 	Runs the quarkus experience in conjunction with your IDE
 
 	Source is assumed to be in current directory and there should be a pom.xml file present
@@ -41,27 +38,25 @@ func newDev(l *cli.CLI) *cobra.Command {
 
 	`,
 
-	Args: func(cmd *cobra.Command, args []string) error {
+		Args: func(cmd *cobra.Command, args []string) error {
 
-		return validate(l)
+			return validate(l)
 
-	},
+		},
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 
-		return l.Run(args)
+			return l.Run(args)
 
-	},
-}
+		},
+	}
 
-dev.Flags().StringVarP(&l.MvnVol, "mvnvol", "m","", "maven cache volume")
-dev.Flags().StringVarP(&l.MvnDir, "mvndir", "d","", "maven directory")
-dev.Flags().StringVarP(&l.SrcVol, "srcvol", "l","", "source volume")
-dev.Flags().StringVarP(&l.SrcDir, "srcdir", "s","", "source directory")
+	dev.Flags().StringVarP(&l.MvnVol, "mvnvol", "m", "", "maven cache volume")
+	dev.Flags().StringVarP(&l.MvnDir, "mvndir", "d", "", "maven directory")
+	dev.Flags().StringVarP(&l.SrcVol, "srcvol", "l", "", "source volume")
+	dev.Flags().StringVarP(&l.SrcDir, "srcdir", "s", "", "source directory")
 
-dev.Flags().BoolVarP(&l.IDEMode, "ide", "i",false, "use containerised ide")
-
-
+	dev.Flags().BoolVarP(&l.IDEMode, "ide", "i", false, "use containerised ide")
 
 	return dev
 }

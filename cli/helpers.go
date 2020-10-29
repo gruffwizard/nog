@@ -1,24 +1,22 @@
 package cli
 
-
 import (
 	"os"
-  "path/filepath"
-
+	"path/filepath"
 )
 
-func IsLocalDir(file string) (bool,error) {
+func IsLocalDir(file string) (bool, error) {
 
-  abs,_ := filepath.Abs(file)
-  info, err := os.Stat(abs)
-  if os.IsNotExist(err) {
-      return false,nil
-  }
+	abs, _ := filepath.Abs(file)
+	info, err := os.Stat(abs)
+	if os.IsNotExist(err) {
+		return false, nil
+	}
 
-  if err!=nil {
-    panic(err)
-  }
+	if err != nil {
+		panic(err)
+	}
 
-  return info.IsDir(),nil
+	return info.IsDir(), nil
 
 }

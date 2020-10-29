@@ -16,20 +16,18 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
+	"github.com/spf13/cobra"
 )
 
 func newVol(cli *cli.CLI) *cobra.Command {
 
-volumeCmd := &cobra.Command{
-	Use:   "volume",
-	Aliases: []string{"vol"},
-	Short: "main entry for actions related to nog tagged docker volumes",
-	Long: ``,
+	volumeCmd := &cobra.Command{
+		Use:     "volume",
+		Aliases: []string{"vol"},
+		Short:   "main entry for actions related to nog tagged docker volumes",
+		Long:    ``,
+	}
 
-}
-
-return volumeCmd
+	return volumeCmd
 }

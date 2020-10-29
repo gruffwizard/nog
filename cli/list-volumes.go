@@ -1,25 +1,25 @@
 package cli
 
 import (
-  "fmt"
-  "github.com/gruffwizard/nog/docker"
-
+	"fmt"
+	"github.com/gruffwizard/nog/docker"
 )
 
 func (cli *CLI) ListVolumes() error {
 
+	c, err := docker.NewDockerClient()
 
-    c,err := docker.NewDockerClient()
+	if err != nil {
+		return err
+	}
 
-    if err!=nil { return err }
+	l, err := c.ListVolumes()
 
-    l,err := c.ListVolumes()
+	for _, v := range l {
 
-    for _,v := range l {
+		fmt.Printf("%v\n", v.Name)
+	}
 
-      fmt.Printf("%v\n",v.Name)
-    }
-
-    return nil
+	return nil
 
 }

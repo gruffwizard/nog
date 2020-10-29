@@ -16,22 +16,21 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
+	"github.com/spf13/cobra"
 )
 
 func newQuickStartLS(cli *cli.CLI) *cobra.Command {
 
-qslsCmd := &cobra.Command{
-	Use:   "ls",
-	Short: "list quickstart samples",
-	Long: `list quickstart samples`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-				return cli.ListQuickStarts()
-	},
-}
+	qslsCmd := &cobra.Command{
+		Use:   "ls",
+		Short: "list quickstart samples",
+		Long:  `list quickstart samples`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return cli.ListQuickStarts()
+		},
+	}
 
-return qslsCmd
+	return qslsCmd
 
 }

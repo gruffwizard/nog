@@ -16,20 +16,16 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
-
+	"github.com/spf13/cobra"
 )
-
-
 
 func newRoot(l *cli.CLI) *cobra.Command {
 
-root := &cobra.Command{
-	Use:   "nog",
-	Short: "Containerised Quarkus development environment",
-	Long: `
+	root := &cobra.Command{
+		Use:   "nog",
+		Short: "Containerised Quarkus development environment",
+		Long: `
 Nog is an interface between local code and a containerised quarkus
 development environment. Nog mounts local maven repos, source code etc
 into the container running quarkus and allows you to develop in your
@@ -40,10 +36,9 @@ for the full quarkus experience without having to install anything.
 
 Well except for Nog - and you've already done that.
 	`,
+	}
 
-}
+	root.PersistentFlags().BoolVarP(&cli.Verbose, "verbose", "v", false, "verbose")
 
-root.PersistentFlags().BoolVarP(&cli.Verbose, "verbose", "v",false, "verbose")
-
-return root
+	return root
 }

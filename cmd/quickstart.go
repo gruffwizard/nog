@@ -16,52 +16,53 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"errors"
 	"github.com/gruffwizard/nog/cli"
-
+	"github.com/spf13/cobra"
 )
-
-
-
 
 func newQuickStart(l *cli.CLI) *cobra.Command {
 
-qs := &cobra.Command{
-	Use:   "quickstart",
-	Aliases: []string{"qs"},
-	Short: "quickstart the Quarkus experience",
-	Long:
-`Run the Quarkus experience using a named sample.
+	qs := &cobra.Command{
+		Use:     "quickstart",
+		Aliases: []string{"qs"},
+		Short:   "quickstart the Quarkus experience",
+		Long: `Run the Quarkus experience using a named sample.
 For a complete list use 'nog quickstart ls'
 `,
 
-	Args: func(cmd *cobra.Command, args []string) error {
+		Args: func(cmd *cobra.Command, args []string) error {
+
+			if len(args) < 1 {
+				return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")
+			}
+
+			if l.IDEMode && l.SrcDir=="" && l.SrcVol=="" { l.SrcVol="nog-"+args[0]}
+			
+			err := validate(l)
+
+			if err != nil {
+				return err
+			}
+
+			return cli.CheckValidQuickStart(args[0])
+
+		},
+
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			l.QuickStart = args[0]
+			return l.Run(args[1:])
+
+		},
+	}
+
+	qs.Flags().BoolVarP(&l.IDEMode, "ide", "i", false, "use containerised ide")
+	qs.Flags().StringVarP(&l.MvnVol, "mvnvol", "m", "", "maven cache volume")
+	qs.Flags().StringVarP(&l.MvnDir, "mvndir", "d", "", "maven directory")
+	qs.Flags().StringVarP(&l.SrcVol, "srcvol", "l", "", "source volume")
+	qs.Flags().StringVarP(&l.SrcDir, "srcdir", "s", "", "source directory")
 
 
-		if len(args)<1 { return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")}
-
-		err := validate(l)
-
-		if err!=nil { return err}
-
-		return cli.CheckValidQuickStart(args[0])
-
-	},
-
-	RunE: func(cmd *cobra.Command, args []string) error {
-
-		l.QuickStart=args[0]
-		return l.Run(args[1:])
-
-	},
-
-}
-
-qs.Flags().BoolVarP(&l.IDEMode, "ide", "i",false, "use containerised ide")
-qs.Flags().StringVarP(&l.MvnVol, "mvnvol", "m","", "maven cache volume")
-qs.Flags().StringVarP(&l.MvnDir, "mvndir", "d","", "maven directory")
-
-
-return qs
+	return qs
 }

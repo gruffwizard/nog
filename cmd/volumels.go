@@ -19,23 +19,21 @@ limitations under the License.
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
+	"github.com/spf13/cobra"
 )
-
 
 func newVolLS(cli *cli.CLI) *cobra.Command {
 
-lsCmd := &cobra.Command{
-	Use:   "ls",
-	Short: "list volumes created by nog",
-	Long: `Lists volumes with nog=true labels`,
-	Run: func(cmd *cobra.Command, args []string) {
-			_ = 	cli.ListVolumes()
-	},
-}
+	lsCmd := &cobra.Command{
+		Use:   "ls",
+		Short: "list volumes created by nog",
+		Long:  `Lists volumes with nog=true labels`,
+		Run: func(cmd *cobra.Command, args []string) {
+			_ = cli.ListVolumes()
+		},
+	}
 
-return lsCmd
+	return lsCmd
 
 }
