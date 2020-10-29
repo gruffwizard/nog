@@ -22,7 +22,7 @@ import (
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewImage(cli *cli.CLI) *cobra.Command {
+func newImage(cli *cli.CLI) *cobra.Command {
 
  imageCmd := &cobra.Command{
 	Use:   "image",

@@ -23,7 +23,7 @@ import (
 )
 
 
-func NewDev(l *cli.CLI) *cobra.Command {
+func newDev(l *cli.CLI) *cobra.Command {
 
 	dev :=  &cobra.Command{
 	Use:   "dev",
@@ -43,7 +43,7 @@ func NewDev(l *cli.CLI) *cobra.Command {
 
 	Args: func(cmd *cobra.Command, args []string) error {
 
-		return Validate(l)
+		return validate(l)
 
 	},
 

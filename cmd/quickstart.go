@@ -25,7 +25,7 @@ import (
 
 
 
-func NewQuickStart(l *cli.CLI) *cobra.Command {
+func newQuickStart(l *cli.CLI) *cobra.Command {
 
 qs := &cobra.Command{
 	Use:   "quickstart",
@@ -41,7 +41,7 @@ For a complete list use 'nog quickstart ls'
 
 		if len(args)<1 { return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")}
 
-		err := Validate(l)
+		err := validate(l)
 
 		if err!=nil { return err}
 

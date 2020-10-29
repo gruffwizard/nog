@@ -21,7 +21,7 @@ import (
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewImageLS(cli *cli.CLI) *cobra.Command {
+func newImageLS(cli *cli.CLI) *cobra.Command {
 
 imagelsCmd := &cobra.Command{
 	Use:   "ls",

@@ -24,7 +24,7 @@ import (
 
 
 
-func NewRoot(l *cli.CLI) *cobra.Command {
+func newRoot(l *cli.CLI) *cobra.Command {
 
 root := &cobra.Command{
 	Use:   "nog",

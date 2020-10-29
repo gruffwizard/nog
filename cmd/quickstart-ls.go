@@ -21,7 +21,7 @@ import (
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewQuickStartLS(cli *cli.CLI) *cobra.Command {
+func newQuickStartLS(cli *cli.CLI) *cobra.Command {
 
 qslsCmd := &cobra.Command{
 	Use:   "ls",

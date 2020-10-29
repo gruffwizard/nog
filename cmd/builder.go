@@ -8,25 +8,25 @@ import (
 
 func NewCMD(nog *cli.CLI) *cobra.Command  {
 
-    root:=NewRoot(nog)
+    root:=newRoot(nog)
 
-    root.AddCommand(NewDev(nog))
+    root.AddCommand(newDev(nog))
 
-    vol :=NewVol(nog)
-    vol.AddCommand(NewVolLS(nog))
+    vol :=newVol(nog)
+    vol.AddCommand(newVolLS(nog))
     root.AddCommand(vol)
 
-    image:=NewImage(nog)
-    image.AddCommand(NewImageLS(nog))
+    image:=newImage(nog)
+    image.AddCommand(newImageLS(nog))
     root.AddCommand(image)
 
-    qs:=NewQuickStart(nog)
-    qs.AddCommand(NewQuickStartLS(nog))
-    qs.AddCommand(NewQuickStartCP(nog))
+    qs:=newQuickStart(nog)
+    qs.AddCommand(newQuickStartLS(nog))
+    qs.AddCommand(newQuickStartCP(nog))
 
     root.AddCommand(qs)
 
-    root.AddCommand(NewVersion(nog))
+    root.AddCommand(newVersion(nog))
 
     return root
 }

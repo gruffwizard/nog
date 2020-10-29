@@ -5,7 +5,7 @@ import (
     "github.com/gruffwizard/nog/cli"
     "errors"
 )
-func Validate(config *cli.CLI) error {
+func validate(config *cli.CLI) error {
 
 
   if config.SrcDir!="" && config.SrcVol!="" {

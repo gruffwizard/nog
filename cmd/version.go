@@ -22,7 +22,7 @@ import (
 )
 
 
-func NewVersion(l *cli.CLI) *cobra.Command {
+func newVersion(l *cli.CLI) *cobra.Command {
 
 versionCmd := &cobra.Command{
 	Use:   "version",

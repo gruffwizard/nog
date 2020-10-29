@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 package cmd
-	
+
 import (
 
 	"github.com/spf13/cobra"
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewVol(cli *cli.CLI) *cobra.Command {
+func newVol(cli *cli.CLI) *cobra.Command {
 
 volumeCmd := &cobra.Command{
 	Use:   "volume",

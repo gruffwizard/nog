@@ -22,7 +22,7 @@ import (
 	"errors"
 )
 
-func NewQuickStartCP(l *cli.CLI) *cobra.Command {
+func newQuickStartCP(l *cli.CLI) *cobra.Command {
 
 qsCmd := &cobra.Command{
 	Use:   "copy",
@@ -35,7 +35,7 @@ qsCmd := &cobra.Command{
 
 			if len(args)<1 { return errors.New("must specify quickstart sample name. (Use 'nog qs ls' to find available quickstarts)")}
 
-			err := Validate(l)
+			err := validate(l)
 
 			if err!=nil { return err}
 

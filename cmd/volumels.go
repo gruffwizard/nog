@@ -1,4 +1,7 @@
 /*
+
+Package cmd
+
 Copyright © 2020 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +24,8 @@ import (
 	"github.com/gruffwizard/nog/cli"
 )
 
-func NewVolLS(cli *cli.CLI) *cobra.Command {
+
+func newVolLS(cli *cli.CLI) *cobra.Command {
 
 lsCmd := &cobra.Command{
 	Use:   "ls",
