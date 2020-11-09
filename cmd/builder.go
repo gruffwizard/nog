@@ -25,6 +25,8 @@ func NewCMD(nog *cli.CLI) *cobra.Command {
 
 	root.AddCommand(qs)
 
+	root.AddCommand(newClone(nog))
+
 	root.AddCommand(newVersion(nog))
 
 	return root

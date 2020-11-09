@@ -55,6 +55,7 @@ func newDev(l *cli.CLI) *cobra.Command {
 	dev.Flags().StringVarP(&l.MvnDir, "mvndir", "d", "", "maven directory")
 	dev.Flags().StringVarP(&l.SrcVol, "srcvol", "l", "", "source volume")
 	dev.Flags().StringVarP(&l.SrcDir, "srcdir", "s", "", "source directory")
+	dev.Flags().BoolVarP(&l.Convert, "convert", "c", false, "convert to quarkus")
 
 	dev.Flags().BoolVarP(&l.IDEMode, "ide", "i", false, "use containerised ide")
 

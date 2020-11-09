@@ -2,6 +2,7 @@ package cli
 
 var Verbose bool
 
+
 type CLI struct {
 	IDEMode bool
 
@@ -14,7 +15,9 @@ type CLI struct {
 
 	QuickStart     string
 	QuickStartOnly bool
-
+	Clone          string
+	Convert        bool
+	
 	SrcDir string
 	SrcVol string
 	MvnVol string

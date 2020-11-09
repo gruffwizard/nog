@@ -39,6 +39,6 @@ Well except for Nog - and you've already done that.
 	}
 
 	root.PersistentFlags().BoolVarP(&cli.Verbose, "verbose", "v", false, "verbose")
-
+	
 	return root
 }

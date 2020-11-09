@@ -3,6 +3,8 @@ package cli
 import (
 	"fmt"
 	"github.com/gruffwizard/nog/docker"
+		"strings"
+	//"github.com/pkg/browser"
 )
 
 func ensureImagePresent(d *docker.NogDockerClient,image string) error {
@@ -40,6 +42,9 @@ func (l *CLI) buildDef(args []string) (docker.ContainerDef) {
 
 	if l.QuickStart != "" { c.AddEnv("NOG_QUICKSTART",l.QuickStart) }
 	if l.QuickStartOnly   { c.AddEnv("NOG_QUICKSTART_ONLY","1")     }
+
+	if l.Clone != ""      { c.AddEnv("NOG_CLONE",l.Clone) }
+	if l.Convert          { c.AddEnv("NOG_CONVERT","1") }
 
 	c.Cmd = []string{"/home/nog/tools/nog.sh"}
 
@@ -82,11 +87,22 @@ func (l *CLI) Run(args []string) error {
 
 
 	d, err := docker.NewDockerClient()
-	d.Verbose = Verbose
 
 	if err != nil {
 		return err
 	}
+
+	d.Verbose = Verbose
+	d.Scanner=func(s string) {
+
+			s=strings.ToLower(s)
+			if strings.Contains(s,"quarkus main thread") &&
+			 	 strings.Contains(s,"listening on:") {
+					 //browser.OpenURL("http://localhost:8080")
+		}
+
+	}
+	d.Scanner=nil
 
 	if err=ensureImagePresent(d,c.Image); err!=nil { return err}
 

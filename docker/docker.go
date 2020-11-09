@@ -64,6 +64,7 @@ type NogDockerClient struct {
 	ctx     context.Context
 	cli     *client.Client
 	Verbose bool
+	Scanner func(string)
 }
 
 type NogImage struct {

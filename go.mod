@@ -11,4 +11,5 @@ require (
 	github.com/spf13/cobra v1.1.1
 	gopkg.in/yaml.v2 v2.3.0
 	github.com/msoap/byline v1.1.1
+        github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4 
 )
