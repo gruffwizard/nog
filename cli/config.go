@@ -5,6 +5,7 @@ import ()
 type AConfig struct {
 	args []string
 	envs []string
+	foo. []string
 }
 
 func (c *AConfig) AddEnv(k string,v string) {
