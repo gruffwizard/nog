@@ -3,13 +3,12 @@ module github.com/gruffwizard/nog
 go 1.15
 
 require (
-	github.com/docker/distribution v2.7.1+incompatible // indirect
+	github.com/Microsoft/go-winio v0.6.1 // indirect
+	github.com/docker/distribution v2.8.2+incompatible // indirect
 	github.com/docker/docker v1.13.1
 	github.com/docker/go-connections v0.4.0
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/spf13/cobra v1.1.1
 	gopkg.in/yaml.v2 v2.3.0
-	github.com/msoap/byline v1.1.1
-        github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4 
 )
